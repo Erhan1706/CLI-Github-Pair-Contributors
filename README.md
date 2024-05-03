@@ -33,10 +33,10 @@ The following options can be used to configure the result obtained:
 ~~~ 
 python main.py --a -owner <owner> -repo <repo> --n <int> --num_pairs <int>
 ~~~
-* <code> -owner </code>: owner of the repository *[required]*
-* <code> -repo </code>: name of the repository *[required]*
-* <code> --a </code>: flag, when active will display extra information about the repository
-* <code> --n </code>: number of commits to fetch. By default it fetches the 50 latest commits.
+* <code>-owner </code>: owner of the repository *[required]*
+* <code>-repo </code>: name of the repository *[required]*
+* <code>--a </code>: flag, when active will display extra information about the repository
+* <code>--n </code>: number of commits to fetch. By default it fetches the 50 latest commits.
 *  <code>--num_pairs </code>: number of contributor pairs that will be displayed. By default it display the top 3 pairs. 
 
 Running <code> python main.py --help</code> will also display this information in the terminal.
