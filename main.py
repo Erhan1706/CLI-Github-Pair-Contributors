@@ -3,6 +3,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from pprint import pprint
+import itertools
+
 
 load_dotenv()
 
@@ -29,30 +31,42 @@ def get_repository_commits(repo_owner: str, repo_name: str, access_token: str = 
     return response.json()
 
 
-def get_changed_files(commits: list[str], repo_owner: str, repo_name: str, access_token: str = None):
+def get_changed_files_by_author(commits: list[str], repo_owner: str, repo_name: str, access_token: str = None):
     headers = {"Authorization": f"token {access_token}"}
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits"
 
     authors = {}
     for commit in commits:
         res = requests.get(f"{url}/{commit['sha']}", headers=headers).json()
+        author = commit["commit"]["author"]["name"]
+        if author not in authors:
+                authors[author] = {}
         for file in res["files"]:
-            if commit["author"]["login"] not in authors:
-                authors[commit["author"]["login"]] = []
-            cur_list = authors.get(commit["author"]["login"])
-            if file["filename"] not in cur_list:
-                cur_list.append( (file["filename"], 1))
+            filename = file["filename"]
+            if filename not in authors[author]:
+                authors[author][filename] = 1
             else:
-                cur_list[file["filename"]] += 1
-        print('')
+                authors[author][filename] += 1
+    return authors
 
+def pairwise_comparison(top_k: int, authors: dict[str, dict[str, int]]):
+    combinations = itertools.combinations(authors.keys(), 2)
+    res = []
+    for c in combinations:
+        a1, a2 = c
+        common_files = authors[a1].keys() & authors[a2].keys()
+        sum = 0
+        for file in common_files:
+            sum += min(authors[a1][file],authors[a2][file])
+        res.append((a1, a2, sum))
+    res.sort(key=lambda tup: tup[2], reverse=True)
+    return res[:top_k]
 
 
 access_token = os.environ.get("GITHUB_ACCESS_TOKEN")
-# res = get_repository_contributors("fesh0r", "fernflower", access_token)
-#commits = get_repository_commits("fesh0r", "fernflower", access_token)
-#get_changed_files(commits, "fesh0r", "fernflower", access_token)
-
+commits = get_repository_commits("fesh0r", "fernflower", access_token)
+authors = get_changed_files_by_author(commits, "fesh0r", "fernflower", access_token)
+pairwise_comparison(5, authors=authors)
 
 #headers = {"Authorization": f"token {access_token}", "author": "gorrus"}
 #pprint(requests.get("https://api.github.com/rate_limit", headers=headers).json())
