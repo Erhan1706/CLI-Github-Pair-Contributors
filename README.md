@@ -26,6 +26,10 @@ Create a .env file and add your personal access token:
 ~~~ 
 GITHUB_ACCESS_TOKEN=<token>
 ~~~
+Or add your access token to the following line in main.py: 
+~~~ 
+access_token = <token>
+~~~
 Note that this is highly recommended, since calls to the GitHub REST API without an access token will have a much lower API rate limit. Some requests might also be unauthorized without an access token.
 
 ## Running from the command line
