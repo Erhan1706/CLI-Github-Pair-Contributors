@@ -1,5 +1,5 @@
 # Github Pair Contributors CLI
-CLI tool developed with Python to calculate the pairs of developers who most frequently contribute to the same files/modules in a GitHub repository. 
+CLI tool developed with Python 3.10.2 to calculate the pairs of developers who most frequently contribute to the same files/modules in a GitHub repository. 
 ## Installation
 Clone the repository with: 
 ~~~ 
