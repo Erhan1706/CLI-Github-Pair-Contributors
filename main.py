@@ -3,10 +3,10 @@ import requests
 import os
 from dotenv import load_dotenv
 import itertools
-from typing import Union
+from typing import Union, List, Dict, Tuple
 
 
-def get_repository_commits(repo_owner: str, repo_name: str, access_token: str = None, per_page: int = 10):
+def get_repository_commits(repo_owner: str, repo_name: str, access_token: str = None, per_page: int = 50):
     """
     Retrieves the commits for a given repository.
 
@@ -21,13 +21,14 @@ def get_repository_commits(repo_owner: str, repo_name: str, access_token: str = 
     """
     params = {"per_page": per_page}
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits"
-    headers = {"Authorization": f"token {access_token}"}
+    if access_token: headers = {"Authorization": f"token {access_token}"}
+    else: headers = None
     response = requests.get(url, params=params, headers=headers)
 
     return response
 
 
-def get_changed_files_by_author(commits: list[str], repo_owner: str, repo_name: str, access_token: str = None):
+def get_changed_files_by_author(commits: List[str], repo_owner: str, repo_name: str, access_token: str = None):
     """
     Retrieves the number of times each file has been changed by each author in a given list of commits.
 
@@ -53,7 +54,8 @@ def get_changed_files_by_author(commits: list[str], repo_owner: str, repo_name: 
                 ...
             }
     """
-    headers = {"Authorization": f"token {access_token}"}
+    if access_token: headers = {"Authorization": f"token {access_token}"}
+    else: headers = None
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits"
     # Hashmap that will serve as a frequency counter for each author and file
     authors = {}
@@ -71,9 +73,7 @@ def get_changed_files_by_author(commits: list[str], repo_owner: str, repo_name: 
                 authors[author][filename] += 1
     return authors
 
-import itertools
-
-def pairwise_comparison(top_k: int, authors: dict[str, dict[str, int]], extra_info=True):
+def pairwise_comparison(top_k: int, authors: Dict[str, Dict[str, int]], extra_info: bool):
     """
     Perform pairwise comparison between authors based on their contributions to common files.
 
@@ -101,7 +101,7 @@ def pairwise_comparison(top_k: int, authors: dict[str, dict[str, int]], extra_in
     res.sort(key=lambda tup: tup[2], reverse=True)
     display_results(res[:top_k], extra_info)
 
-def display_results(res: Union[list[tuple[str,str,int]],list[tuple[str,str,int,str,int]]], extra_info: bool):
+def display_results(res: Union[List[Tuple[str,str,int]],List[Tuple[str,str,int,str,int]]], extra_info: bool):
     """
     Display the results of the pair contributors analysis.
 

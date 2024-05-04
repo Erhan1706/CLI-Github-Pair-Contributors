@@ -5,9 +5,13 @@ Clone the repository with:
 ~~~ 
 git clone https://github.com/Erhan1706/CLI-Github-Pair-Contributors.git
 ~~~ 
+Navigate to the directory
+~~~
+cd CLI-Github-Pair-Contributors
+~~~
 *(Optional)* Create a virtual environment
 ~~~ 
-py -m venv .venv
+python3 -m venv .venv
 ~~~ 
 *(Optional)*  Activate the virtual environment
 ~~~ 
@@ -17,16 +21,16 @@ Install all the dependencies
 ~~~ 
 pip install -r requirements.txt
 ~~~
-*(Optional)* Create a .env file and add your personal access token:
+Create a .env file and add your personal access token:
 ~~~ 
 GITHUB_ACCESS_TOKEN=<token>
 ~~~
-Note that this is highly recommended, since calls  to the GitHub REST API without an access token will have a much lower API rate limit.
+Note that this is highly recommended, since calls to the GitHub REST API without an access token will have a much lower API rate limit. Some requests might also be unauthorized without an access token.
 
 ## Running from the command line
 Use <code> python main.py</code> to run the program. A minimal working example is:
 ~~~ 
-python main.py -owner fesh0 -repo fernflower
+python main.py -owner fesh0r -repo fernflower
 ~~~
 ### Extra options
 The following options can be used to configure the result obtained:
