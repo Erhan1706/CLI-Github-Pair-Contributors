@@ -11,7 +11,8 @@ py -m venv .venv
 ~~~ 
 *(Optional)*  Activate the virtual environment
 ~~~ 
-.venv\Scripts\activate 
+.venv\Scripts\activate (Windows)
+source .venv/bin/activate (Linux)
 ~~~ 
 Install all the dependencies
 ~~~ 
